@@ -4,7 +4,7 @@ import validator from "@rjsf/validator-ajv8";
 import * as Yup from 'yup';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { UserContext } from '../../Context/userContext.js';
+
 
 const Register = () => {
 
@@ -44,17 +44,17 @@ const Register = () => {
     };
 
     const handleSubmit = async ({ formData }) => {
-        validationSchema.validate(formData, { abortEarly: false })
-            .then(() => {
-                setValidationError(null);
-                setFormData({});
-            })
-            .catch((error) => {
-                setValidationError(error.errors.join(', '));
-            });
+        try {
+            await validationSchema.validate(formData, { abortEarly: false });
+            setValidationError(null);
+            setFormData({});
+        } catch (error) {
+            setValidationError(error.errors.join(', '));
+        }
 
         try {
             const response = await axios.post('https://ecommerce.routemisr.com/api/v1/auth/signup', formData);
+
             if (response.data && response.data.message === 'success') {
                 navigate('/login');
             } else {
@@ -64,6 +64,7 @@ const Register = () => {
             setError(err.response?.data?.message || err.message);
         }
     };
+
 
     return <>
 
@@ -77,6 +78,7 @@ const Register = () => {
             className='container'
         >
             {validationError && <div style={{ color: 'red' }}>{validationError}</div>}
+            {error && <div style={{ color: 'red' }}>{error}</div>}
         </Form>
 
     </>
