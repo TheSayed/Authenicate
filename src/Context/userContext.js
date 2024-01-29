@@ -14,11 +14,10 @@ const UserContextProvider = (props) => {
 
 
 
-    return (
-        <UserContext.Provider value={{ setUserToken, userToken }}>
-            {props.children}
-        </UserContext.Provider>
-    );
+    return <UserContext.Provider value={{ setUserToken, userToken }}>
+        {props.children}
+    </UserContext.Provider>
+
 };
 
 export default UserContextProvider;

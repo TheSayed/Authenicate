@@ -41,7 +41,6 @@ const Login = () => {
         validationSchema.validate(formData, { abortEarly: false })
             .then(() => {
                 setValidationError(null);
-                console.log('Form Data:', formData);
                 setFormData({});
             })
             .catch((error) => {
@@ -52,36 +51,34 @@ const Login = () => {
             const response = await axios.post('https://ecommerce.routemisr.com/api/v1/auth/signin', formData);
             if (response.data && response.data.message === 'success') {
                 navigate('/home', { push: true });
-                console.log(response?.data.token)
+
                 setUserToken(response?.data.token)
-                console.log(response.data.message)
-                console.log(formData)
+
             } else {
                 setError(response.data.message)
-                console.log(error)
+
             }
         } catch (err) {
             setError(err.response?.data?.message || err.message);
         }
     };
 
-    return (
-        <>
+    return <>
 
-            <Form
-                id="myForm"
-                validator={validator}
-                schema={schema}
-                onSubmit={handleSubmit}
-                onChange={handleChange}
-                formData={formData}
-                className='container'
-            >
-                {validationError && <div style={{ color: 'red' }}>{validationError}</div>}
-            </Form>
+        <Form
+            id="myForm"
+            validator={validator}
+            schema={schema}
+            onSubmit={handleSubmit}
+            onChange={handleChange}
+            formData={formData}
+            className='container'
+        >
+            {validationError && <div style={{ color: 'red' }}>{validationError}</div>}
+        </Form>
 
-        </>
-    );
+    </>
+
 };
 
 export default Login;
